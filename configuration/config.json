@@ -1,4 +1,7 @@
 {
     "port": "1337",
-    "apiPrefix": "/api"
+    "postgresUri":
+        "postgres://klhfgkjkjtpxkq:b77a05eb0ff4764ae76130b6e515e82896f47f4300bbeebe826b6328c972a066@ec2-54-235-148-19.compute-1.amazonaws.com:5432/dajjuegsva6vv2?ssl=true",
+    "apiPrefix": "/api",
+    "secret": "secret"
 }

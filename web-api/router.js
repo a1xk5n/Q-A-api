@@ -4,11 +4,16 @@ const config = require('../configuration');
 const express = require('express');
 const path = require('path');
 const ErrorHandlerMiddleware = require('./middlewares/error-handler');
-const NotFoundHttpError = require('./errorHandlers/httpErrors/notFoundError');
+const UserController = require('./controllers/userController');
 
 class Router {
     constructor() {
-        this._controllers = [];
+        this._controllers = [
+            {
+                path: '/user',
+                controller: new UserController(),
+            },
+        ];
     }
 
     _registerPublicMiddlewares(app) {

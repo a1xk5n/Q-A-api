@@ -3,6 +3,7 @@
 const express = require('express');
 const Router = require('./router');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 class Application {
     constructor(config) {
@@ -16,8 +17,9 @@ class Application {
 
     _registerMiddlewares(app) {
         app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({extended: true}));
-        app.use(function (req, res, next) {
+        app.use(cookieParser());
+        app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(function(req, res, next) {
             res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
             res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
