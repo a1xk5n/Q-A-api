@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const ErrorHandlerMiddleware = require('./middlewares/error-handler');
 const UserController = require('./controllers/userController');
+const TagsController = require('./controllers/tagsController');
 
 class Router {
     constructor() {
@@ -12,6 +13,10 @@ class Router {
             {
                 path: '/user',
                 controller: new UserController(),
+            },
+            {
+                path: '/tags',
+                controller: new TagsController(),
             },
         ];
     }

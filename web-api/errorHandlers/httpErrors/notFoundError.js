@@ -3,8 +3,8 @@
 const HttpError = require('./httpError');
 
 class NotFoundHttpError extends HttpError {
-    constructor(text = 'Not Found') {
-        super(404, text);
+    constructor() {
+        super(404, 'Not Found');
     }
 }
 
