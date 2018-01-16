@@ -1,7 +1,5 @@
 const db = require('../database');
 
-const BadRequest = require('../../web-api/errorHandlers/httpErrors/badRequest');
-
 class TagsRepository {
     constructor() {
         this.pool = db.getPool();
@@ -9,19 +7,11 @@ class TagsRepository {
 
     createTag(tagName) {
         return new Promise((resolve, reject) => {
-            this.findTag(tagName).then(info => {
-                if (info) {
-                    reject(new BadRequest());
-                } else {
-                    this.pool.query(`INSERT INTO tags (tag_name) VALUES ('${tagName}')`, (err, res) => {
-                        if (err) {
-                            reject(err);
-                        }
-                        this.findTag(tagName)
-                            .then(info => resolve(info))
-                            .catch(err => reject(err));
-                    });
+            this.pool.query(`INSERT INTO tags (tag_name) VALUES ('${tagName}') returning *`, (err, res) => {
+                if (err) {
+                    reject(err);
                 }
+                resolve(res.rows[0]);
             });
         });
     }
@@ -50,37 +40,22 @@ class TagsRepository {
 
     deleteTag(tagId) {
         return new Promise((resolve, reject) => {
-            this.findTagById(tagId).then(info => {
-                if (!info) {
-                    reject(new BadRequest());
-                } else {
-                    this.pool.query(`DELETE FROM tags where id='${tagId}'`, (err, res) => {
-                        if (err) {
-                            reject(err);
-                        }
-
-                        resolve();
-                    });
+            this.pool.query(`DELETE FROM tags where id='${tagId}'`, (err, res) => {
+                if (err) {
+                    reject(err);
                 }
+                resolve();
             });
         });
     }
 
     updateTag(tagId, newTagName) {
         return new Promise((resolve, reject) => {
-            this.findTagById(tagId).then(info => {
-                if (!info) {
-                    reject(new BadRequest());
-                } else {
-                    this.pool.query(`update tags set tag_name='${newTagName}' where id=${tagId}`, (err, res) => {
-                        if (err) {
-                            reject(err);
-                        }
-                        this.findTagById(tagId)
-                            .then(info => resolve(info))
-                            .catch(err => reject(err));
-                    });
+            this.pool.query(`update tags set tag_name='${newTagName}' where id=${tagId} returning *`, (err, res) => {
+                if (err) {
+                    reject(err);
                 }
+                resolve(res.rows[0]);
             });
         });
     }

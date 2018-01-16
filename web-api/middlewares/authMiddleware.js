@@ -7,6 +7,7 @@ const authMiddleware = (req, res, next) => {
     if (token) {
         jwt.verify(token, config.get('secret'), (err, decoded) => {
             if (err) {
+                res.clearCookie('Autorization');
                 next(new UnAuthorizedError());
             }
 
@@ -16,6 +17,16 @@ const authMiddleware = (req, res, next) => {
                 userRole: decoded.role,
                 isAdmin: decoded.role === 'admin',
             };
+
+            const updatedToken = jwt.sign(
+                { id: decoded.id, login: decoded.login, role: decoded.role },
+                config.get('secret'),
+                {
+                    expiresIn: 900,
+                },
+            );
+
+            res.cookie('Autorization', updatedToken);
 
             next();
         });

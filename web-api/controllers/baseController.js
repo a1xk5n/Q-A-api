@@ -12,8 +12,8 @@ class BaseController {
     getAll(req, res, next) {
         this._service
             .getAll()
-            .then(tags => {
-                res.send(tags);
+            .then(info => {
+                res.send(info);
             })
             .catch(error => {
                 return next(error);
@@ -22,7 +22,7 @@ class BaseController {
 
     create(req, res, next) {
         this._service
-            .create(req.body)
+            .create(req.body, req.decodedInfo)
             .then(info => {
                 res.send(info);
             })
@@ -33,7 +33,7 @@ class BaseController {
 
     update(req, res, next) {
         this._service
-            .update(req.body)
+            .update(req.body, req.decodedInfo)
             .then(info => {
                 res.send(info);
             })
@@ -44,7 +44,7 @@ class BaseController {
 
     delete(req, res, next) {
         this._service
-            .delete(req.body)
+            .delete(req.body, req.decodedInfo)
             .then(() => {
                 res.send({ info: 'deleted' });
             })

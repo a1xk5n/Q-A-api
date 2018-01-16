@@ -3,6 +3,7 @@
 const TagsRepository = require('../../data-access/repositories/tagsRepository');
 
 const NotFoundHttpError = require('../../web-api/errorHandlers/httpErrors/notFoundError');
+const BadRequest = require('../../web-api/errorHandlers/httpErrors/badRequest');
 
 class TagsService {
     constructor() {
@@ -23,7 +24,13 @@ class TagsService {
     create({ tagName }) {
         return new Promise((resolve, reject) => {
             this.repository
-                .createTag(tagName)
+                .findTag(tagName)
+                .then(info => {
+                    if (info) {
+                        throw new BadRequest();
+                    }
+                    return this.repository.createTag(tagName);
+                })
                 .then(tagInfo => {
                     resolve({ tagId: tagInfo.id, tagName: tagInfo.tag_name });
                 })
@@ -34,7 +41,13 @@ class TagsService {
     delete({ tagId }) {
         return new Promise((resolve, reject) => {
             this.repository
-                .deleteTag(tagId)
+                .findTagById(tagId)
+                .then(info => {
+                    if (!info) {
+                        throw new BadRequest();
+                    }
+                    this.repository.deleteTag(tagId);
+                })
                 .then(() => {
                     resolve();
                 })
@@ -45,7 +58,13 @@ class TagsService {
     update({ tagId, tagName }) {
         return new Promise((resolve, reject) => {
             this.repository
-                .updateTag(tagId, tagName)
+                .findTagById(tagId)
+                .then(info => {
+                    if (!info) {
+                        throw new BadRequest();
+                    }
+                    return this.repository.updateTag(tagId, tagName);
+                })
                 .then(tagInfo => {
                     resolve({ tagId: tagInfo.id, tagName: tagInfo.tag_name });
                 })

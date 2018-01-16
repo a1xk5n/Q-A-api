@@ -13,24 +13,30 @@ class UserService {
         this.repository = new UserRepository();
     }
 
-    register({ userName, password, role }) {
+    register({ login, password, role = 'user' }) {
         return new Promise((resolve, reject) => {
             const hashedPassword = bcrypt.hashSync(password, 8);
 
             const user = {
-                userName,
+                login,
                 password: hashedPassword,
                 role,
             };
 
             this.repository
-                .insertUser(user)
+                .findUser(login)
+                .then(info => {
+                    if (info) {
+                        throw new BadRequest();
+                    }
+                    return this.repository.insertUser(user);
+                })
                 .then(userInfo => {
                     const token = jwt.sign(
                         { id: userInfo.id, login: userInfo.login, role: userInfo.role },
                         config.get('secret'),
                         {
-                            expiresIn: 86400,
+                            expiresIn: 900,
                         },
                     );
 
@@ -59,7 +65,7 @@ class UserService {
                         { id: userInfo.id, login: userInfo.login, role: userInfo.role },
                         config.get('secret'),
                         {
-                            expiresIn: 86400,
+                            expiresIn: 900,
                         },
                     );
 

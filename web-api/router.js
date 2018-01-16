@@ -6,6 +6,8 @@ const path = require('path');
 const ErrorHandlerMiddleware = require('./middlewares/error-handler');
 const UserController = require('./controllers/userController');
 const TagsController = require('./controllers/tagsController');
+const QuestionsController = require('./controllers/questionsController');
+const AnswersController = require('./controllers/answersController');
 
 class Router {
     constructor() {
@@ -17,6 +19,14 @@ class Router {
             {
                 path: '/tags',
                 controller: new TagsController(),
+            },
+            {
+                path: '/questions',
+                controller: new QuestionsController(),
+            },
+            {
+                path: '/answers',
+                controller: new AnswersController(),
             },
         ];
     }
