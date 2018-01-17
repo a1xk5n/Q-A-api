@@ -23,7 +23,7 @@ class QuestionsRepository {
         return new Promise((resolve, reject) => {
             this.pool.query(
                 `insert into answers (user_id, question_id, text, date_of_create, date_of_update)
-            values (${userId}, '${questionId}', '${text}', now(), now()) returning id`,
+            values ('${userId}', '${questionId}', '${text}', now(), now()) returning id`,
                 (err, res) => {
                     if (err) {
                         reject(err);

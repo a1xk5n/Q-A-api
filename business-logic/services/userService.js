@@ -7,6 +7,7 @@ const UserRepository = require('../../data-access/repositories/userRepository');
 
 const NotFoundHttpError = require('../../web-api/errorHandlers/httpErrors/notFoundError');
 const UnauthorizedError = require('../../web-api/errorHandlers/httpErrors/unauthorizedError');
+const BadRequest = require('../../web-api/errorHandlers/httpErrors/badRequest');
 
 class UserService {
     constructor() {
@@ -52,7 +53,7 @@ class UserService {
                 .findUser(login)
                 .then(userInfo => {
                     if (!userInfo) {
-                        throw new NotFoundHttpError();
+                        throw new BadRequest();
                     }
 
                     const passwordIsValid = bcrypt.compareSync(password, userInfo.password);
