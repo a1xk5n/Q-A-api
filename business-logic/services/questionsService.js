@@ -23,7 +23,7 @@ class QuestionsService {
     getFilteredByTags(userId, tags) {
         return new Promise((resolve, reject) => {
             this.repository
-                .getFilteredByTags(userId, JSON.parse(tags))
+                .getFilteredByTags(userId, tags)
                 .then(questions => {
                     resolve(questions);
                 })
@@ -41,7 +41,7 @@ class QuestionsService {
                     }
                     return this.repository.createQuestion(userId, title, description);
                 })
-                .then(questionId => this.repository.updateQuestionTagsMapper(questionId, JSON.parse(tags)))
+                .then(questionId => this.repository.updateQuestionTagsMapper(questionId, tags))
                 .then(questionId => this.repository.getQuestionWithAnswers(userId, questionId))
                 .then(info => {
                     resolve(info);
@@ -82,7 +82,7 @@ class QuestionsService {
                     }
                     return this.repository.deleteQuestionTagMapperInfo(questionId);
                 })
-                .then(() => this.repository.updateQuestionTagsMapper(questionId, JSON.parse(tags)))
+                .then(() => this.repository.updateQuestionTagsMapper(questionId, tags))
                 .then(() => this.repository.getQuestionWithAnswers(userId, questionId))
                 .then(info => {
                     resolve(info);
