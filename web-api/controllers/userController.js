@@ -13,9 +13,9 @@ class UserController {
     register(req, res, next) {
         this._service
             .register(req.body)
-            .then(({ token }) => {
+            .then(({ token, id, login, role }) => {
                 res.cookie('Autorization', token);
-                res.send({ auth: true });
+                res.send({ auth: true, id, login, role });
             })
             .catch(error => {
                 return next(error);
@@ -25,9 +25,9 @@ class UserController {
     login(req, res, next) {
         this._service
             .login(req.body)
-            .then(({ token }) => {
+            .then(({ token, id, login, role }) => {
                 res.cookie('Autorization', token);
-                res.send({ auth: true });
+                res.send({ auth: true, id, login, role });
             })
             .catch(error => {
                 return next(error);

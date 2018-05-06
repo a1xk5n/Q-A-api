@@ -41,7 +41,7 @@ class UserService {
                         },
                     );
 
-                    resolve({ token: token });
+                    resolve({ token: token, userInfo });
                 })
                 .catch(error => reject(error));
         });
@@ -70,7 +70,7 @@ class UserService {
                         },
                     );
 
-                    resolve({ token: token });
+                    resolve({ token: token, ...userInfo  });
                 })
                 .catch(error => reject(error));
         });
