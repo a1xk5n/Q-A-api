@@ -2,6 +2,7 @@
 
 const express = require('express');
 const UserService = require('../../business-logic/services/userService');
+const isAuthorized = require('../middlewares/isAuthorized');
 
 class UserController {
     constructor() {
@@ -39,10 +40,24 @@ class UserController {
         res.send({ auth: false });
     }
 
+    isAuthorized(req, res, next) {
+        if (req.decodedInfo) {
+            res.send({
+                auth: true,
+                id: req.decodedInfo.userId,
+                login: req.decodedInfo.userLogin,
+                role: req.decodedInfo.userRole,
+            });
+        } else {
+            res.send({ auth: false });
+        }
+    }
+
     _registerRoutes(router) {
         router.post('/register', this.register.bind(this));
         router.post('/login', this.login.bind(this));
         router.get('/logout', this.logout.bind(this));
+        router.get('/isAuthorized', isAuthorized, this.isAuthorized.bind(this));
     }
 
     get Router() {
