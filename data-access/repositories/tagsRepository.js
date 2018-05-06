@@ -29,7 +29,7 @@ class TagsRepository {
 
     findTagById(id) {
         return new Promise((resolve, reject) => {
-            this.pool.query(`SELECT * FROM tags WHERE id='${id}'`, (err, res) => {
+            this.pool.query(`SELECT * FROM tags WHERE id='${+id}'`, (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
