@@ -32,8 +32,9 @@ class TagsRepository {
             this.pool.query(`SELECT * FROM tags WHERE id='${id}'`, (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res.rows[0]);
                 }
-                resolve(res.rows[0]);
             });
         });
     }
