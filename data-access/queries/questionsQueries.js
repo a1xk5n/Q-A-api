@@ -29,6 +29,7 @@ INNER JOIN tags ON question_tag_mapper.tag_id=tags.id
 INNER JOIN users ON questions.user_id=users.id
 GROUP BY questions.id,
          users.id
+         ORDER BY questions.id DESC
 `;
 
 const getQuestionsFilteredByTags = (userId, tags) => `
@@ -66,6 +67,7 @@ WHERE questions.id IN
      WHERE question_tag_mapper.tag_id IN (${tags.join(',')}) )
 GROUP BY questions.id,
          users.id
+         ORDER BY questions.id DESC
 `;
 
 const getPairsOfIds = (f, s) => `(${f}, ${s})`;
